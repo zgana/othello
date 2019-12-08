@@ -90,4 +90,11 @@ state:
     Player "O" wins by 42 - 22.
 
 
-## 
+## TODO
+
+Known TODO items include:
+
+* Decouple game state engine from presentation — alternative UIs could include
+  curses, PyQt/PyGTK, some kinda website, etc.
+
+* Store game history and provide interface for saving the logs to disk.
