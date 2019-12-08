@@ -155,7 +155,7 @@ class Game:
         width = 2 + 3 * self.board.N
         header = hO + (width - lO - lX) * ' ' + hX
         div = width * '-'
-        out = '\n'.join([div, header, div, str(self.board).lower(), '\n'])
+        out = '\n'.join([div, header, div, str(self.board).lower()])
         return out
 
     def get_legal_moves(self, player):
