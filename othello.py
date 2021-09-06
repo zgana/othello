@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from argparse import ArgumentParser
+import re
 
 import numpy as np
 
@@ -66,7 +67,6 @@ class Space:
         return self.neighbors[di,dj]
 
 
-
 class Board:
 
     def __init__(self, N=8, othello=True):
@@ -99,7 +99,7 @@ class Board:
                   for i in range(N)]
         lines += ['  ' + ''.join(' {} '.format(i+1) for i in range(N))]
         for (i,line) in enumerate(lines[:-1]):
-            lines[i] = '{} '.format(i+1) + line
+            lines[i] = '{} '.format(chr(ord('a') + i)) + line
         return '\n'.join(lines)
 
     def __call__(self, player, i, j, force=False):
@@ -126,11 +126,14 @@ class Game:
 
     def move(self, s):
         try:
-            i, j = map(int, s.split())
-            i -= 1
-            j -= 1
-        except:
-            raise InvalidMove(f'could not parse move: "{s}"')
+            rows = re.findall('[a-h]', s)
+            assert len(rows) == 1
+            i = ord(rows[0]) - ord('a')
+            cols = re.findall('[1-8]', s)
+            assert len(cols) == 1
+            j = int(cols[0]) - 1
+        except Exception as e:
+            raise InvalidMove(f'could not parse move: "{s}"') from e
         player = self.cur_player
         self.board(player, i, j)
         self.toggleplayer()
@@ -220,6 +223,7 @@ class Game:
         else:
             i, j = moves[np.random.choice(len(moves))]
         move = f'{i+1} {j+1}'
+        move = f'{chr(ord("a")+i)} {j+1}'
         print(f'{player} => {move} (*computer player*)')
         return move
 
